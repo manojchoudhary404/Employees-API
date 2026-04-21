@@ -1,0 +1,28 @@
+# Maven
+target/
+*.jar
+*.war
+*.ear
+*.class
+
+# IDE
+.idea/
+*.iml
+.eclipse/
+.settings/
+.classpath
+.project
+*.swp
+*.swo
+.DS_Store
+
+# Spring Boot
+*.log
+logs/
+spring-shell.log
+
+# Docker
+.dockerignore
+
+# OS
+Thumbs.db
