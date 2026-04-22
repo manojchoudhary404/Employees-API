@@ -3,9 +3,9 @@ pipeline {
 
     environment {
         DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'
-        DOCKER_HUB_USERNAME = 'manojchoudhary67'
-        IMAGE_NAME = "${DOCKER_HUB_USERNAME}/employee-api"
-        IMAGE_TAG = "${BUILD_NUMBER}"
+        DOCKER_HUB_USERNAME   = 'manojchoudhary67'
+        IMAGE_NAME            = "${DOCKER_HUB_USERNAME}/employee-api"
+        IMAGE_TAG             = "${BUILD_NUMBER}"
     }
 
     tools {
@@ -25,14 +25,14 @@ pipeline {
         stage('Build Application') {
             steps {
                 echo '🔨 Building Spring Boot app...'
-                bat 'mvn clean package -DskipTests'
+                bat 'mvn clean package -DskipTests -B'
             }
         }
 
         stage('Run Tests') {
             steps {
                 echo '🧪 Running tests...'
-                bat 'mvn test'
+                bat 'mvn test -B'
             }
         }
 
@@ -46,12 +46,17 @@ pipeline {
 
         stage('Login to Docker Hub') {
             steps {
+                echo '🔐 Logging into Docker Hub...'
                 withCredentials([usernamePassword(
                     credentialsId: "${DOCKER_CREDENTIALS_ID}",
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
-                    bat "echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin"
+                    bat '''
+                    echo %DOCKER_PASS%> docker-pass.txt
+                    docker login -u %DOCKER_USER% --password-stdin < docker-pass.txt
+                    del docker-pass.txt
+                    '''
                 }
             }
         }
@@ -68,11 +73,11 @@ pipeline {
     post {
         success {
             echo """
-            ======================================
-            ✅ PIPELINE SUCCESS
-            Image: ${IMAGE_NAME}:${IMAGE_TAG}
-            ======================================
-            """
+======================================
+✅ PIPELINE SUCCESS
+Image: ${IMAGE_NAME}:${IMAGE_TAG}
+======================================
+"""
         }
 
         failure {
