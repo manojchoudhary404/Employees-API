@@ -4,7 +4,7 @@ pipeline {
     // ── Environment Variables ────────────────────────────────────────────────
     environment {
         DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'   // ID set in Jenkins Credentials
-        DOCKER_HUB_USERNAME   = 'your-dockerhub-username' // ← Change this to your Docker Hub username
+        DOCKER_HUB_USERNAME = 'manojchoudhary67' // ← Change this to your Docker Hub username
         IMAGE_NAME            = "${DOCKER_HUB_USERNAME}/employee-api"
         IMAGE_TAG             = "${BUILD_NUMBER}"          // e.g. "42" from Jenkins build number
     }
