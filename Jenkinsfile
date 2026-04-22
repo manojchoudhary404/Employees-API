@@ -31,7 +31,7 @@ pipeline {
         stage('Build Application') {
             steps {
                 echo '🔨 Building with Maven (skipping tests here)...'
-                sh 'mvn clean package -DskipTests -B'
+                bat 'mvn clean package -DskipTests -B'
             }
             post {
                 success {
@@ -48,7 +48,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 echo '🧪 Running unit and integration tests...'
-                sh 'mvn test -B'
+                bat 'mvn test -B'
             }
             post {
                 always {
@@ -68,9 +68,9 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 echo "🐳 Building Docker image: ${IMAGE_NAME}:${IMAGE_TAG}"
-                sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
-                sh "docker tag  ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:latest"
-                sh "docker images ${IMAGE_NAME}"
+                bat "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                bat "docker tag  ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:latest"
+                bat "docker images ${IMAGE_NAME}"
             }
         }
 
@@ -86,10 +86,10 @@ pipeline {
                     )
                 ]) {
                     // Login (password via stdin — never echoed in logs)
-                    sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
+                    bat 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
                     // Push both tags
-                    sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
-                    sh "docker push ${IMAGE_NAME}:latest"
+                    bat "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
+                    bat "docker push ${IMAGE_NAME}:latest"
                     echo "✅ Image pushed: ${IMAGE_NAME}:${IMAGE_TAG}"
                     echo "✅ Image pushed: ${IMAGE_NAME}:latest"
                 }
@@ -97,7 +97,7 @@ pipeline {
             post {
                 always {
                     // Always logout — even on failure
-                    sh 'docker logout'
+                    bat 'docker logout'
                 }
             }
         }
@@ -118,8 +118,8 @@ pipeline {
         }
         always {
             // Remove local Docker images to free disk space
-            sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG} || true"
-            sh "docker rmi ${IMAGE_NAME}:latest       || true"
+            bat "docker rmi ${IMAGE_NAME}:${IMAGE_TAG} || true"
+            bat "docker rmi ${IMAGE_NAME}:latest       || true"
             cleanWs()
         }
     }
