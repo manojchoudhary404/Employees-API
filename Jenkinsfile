@@ -1,83 +1,92 @@
 pipeline {
-  agent any
+    agent any
 
-  tools {
-    maven 'Maven-3.9'
-    jdk 'JDK-17'
-  }
-
-  environment {
-    DOCKER_IMAGE = 'manojchoudhary67/employee-api'
-    DOCKER_TAG   = "${BUILD_NUMBER}"
-  }
-
-  stages {
-
-    stage('Checkout') {
-      steps {
-        git branch: 'main',
-            url: 'https://github.com/manojchoudhary404/Employees-API.git'
-      }
+    tools {
+        maven 'Maven3'
     }
 
-    stage('Build & Test') {
-      steps {
-        echo '🔨 Building & Testing...'
-        bat 'mvn clean test -B'
-      }
-      post {
-        always {
-          junit '**/target/surefire-reports/*.xml'
+    environment {
+        GIT_REPO = 'https://github.com/manojchoudhary404/Employees-API.git'
+        BRANCH = 'main'
+
+        IMAGE_NAME = "manojchoudhary67/employee-api"
+        IMAGE_TAG = "${BUILD_NUMBER}"
+    }
+
+    stages {
+
+        stage('Checkout Code') {
+            steps {
+                echo "📥 Cloning GitHub repo..."
+                git branch: "${BRANCH}", url: "${GIT_REPO}"
+            }
         }
-      }
-    }
 
-    stage('Docker Build') {
-      steps {
-        echo '🐳 Building Docker Image...'
-        bat "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
-        bat "docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_IMAGE}:latest"
-      }
-    }
-
-    stage('Docker Login & Push') {
-      steps {
-        echo '🔐 Logging in & pushing image...'
-        withCredentials([usernamePassword(
-            credentialsId: 'dockerhub-credentials',
-            usernameVariable: 'DOCKER_USER',
-            passwordVariable: 'DOCKER_PASS'
-        )]) {
-            bat '''
-            echo %DOCKER_PASS%> docker-pass.txt
-            docker login -u %DOCKER_USER% --password-stdin < docker-pass.txt
-            del docker-pass.txt
-
-            docker push %DOCKER_IMAGE%:%DOCKER_TAG%
-            docker push %DOCKER_IMAGE%:latest
-            '''
+        stage('Verify Tools') {
+            steps {
+                bat '''
+                java -version
+                mvn -v
+                docker version
+                '''
+            }
         }
-      }
+
+        stage('Build Maven') {
+            steps {
+                bat 'mvn clean package -DskipTests'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                bat """
+                docker build -t %IMAGE_NAME%:%IMAGE_TAG% .
+                docker tag %IMAGE_NAME%:%IMAGE_TAG% %IMAGE_NAME%:latest
+                """
+            }
+        }
+
+        stage('Login Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-credentials',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    bat """
+                    echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
+                    """
+                }
+            }
+        }
+
+        stage('Push Image') {
+            steps {
+                bat """
+                docker push %IMAGE_NAME%:%IMAGE_TAG%
+                docker push %IMAGE_NAME%:latest
+                """
+            }
+        }
+
+        stage('Deploy Container') {
+            steps {
+                bat """
+                docker stop springboot-app || exit 0
+                docker rm springboot-app || exit 0
+                docker run -d -p 8084:8084 --name springboot-app %IMAGE_NAME%:latest
+                """
+            }
+        }
     }
 
-    stage('Deploy') {
-      steps {
-        echo '🚀 Deploying container...'
-
-        bat "docker stop springboot-app || exit 0"
-        bat "docker rm springboot-app || exit 0"
-
-        bat "docker run -d -p 8084:8084 --name springboot-app ${DOCKER_IMAGE}:latest"
-      }
+    post {
+        success {
+            echo '✅ SUCCESS: App running on http://localhost:8084'
+        }
+        failure {
+            echo '❌ Pipeline failed — check logs'
+        }
     }
-  }
-
-  post {
-    success { 
-      echo '✅ Pipeline succeeded! App running on http://localhost:8484'
-    }
-    failure { 
-      echo '❌ Pipeline failed — check logs!' 
-    }
-  }
 }
