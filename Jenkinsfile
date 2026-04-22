@@ -4,8 +4,8 @@ pipeline {
     environment {
         DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'
         DOCKER_HUB_USERNAME   = 'manojchoudhary67'
-        IMAGE_NAME            = "${DOCKER_HUB_USERNAME}/employee-api"
-        IMAGE_TAG             = "${BUILD_NUMBER}"
+        DOCKER_IMAGE            = "${DOCKER_HUB_USERNAME}/employee-api"
+        DOCKER_TAG             = "${BUILD_NUMBER}"
     }
 
     tools {
