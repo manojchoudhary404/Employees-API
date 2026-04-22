@@ -1,94 +1,83 @@
 pipeline {
-    agent any
+  agent any
 
-    environment {
-        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'
-        DOCKER_HUB_USERNAME   = 'manojchoudhary67'
-        DOCKER_IMAGE            = "${DOCKER_HUB_USERNAME}/employee-api"
-        DOCKER_TAG             = "${BUILD_NUMBER}"
+  tools {
+    maven 'Maven-3.9'
+    jdk 'JDK-17'
+  }
+
+  environment {
+    DOCKER_IMAGE = 'manojchoudhary67/employee-api'
+    DOCKER_TAG   = "${BUILD_NUMBER}"
+  }
+
+  stages {
+
+    stage('Checkout') {
+      steps {
+        git branch: 'main',
+            url: 'https://github.com/manojchoudhary404/Employees-API.git'
+      }
     }
 
-    tools {
-        maven 'Maven-3.9'
-        jdk 'JDK-17'
-    }
-
-    stages {
-
-        stage('Checkout Code') {
-            steps {
-                echo '📥 Cloning repository...'
-                checkout scm
-            }
-        }
-
-        stage('Build Application') {
-            steps {
-                echo '🔨 Building Spring Boot app...'
-                bat 'mvn clean package -DskipTests -B'
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                echo '🧪 Running tests...'
-                bat 'mvn test -B'
-            }
-        }
-
-        stage('Build Docker Image') {
-            steps {
-                echo "🐳 Building Docker image ${IMAGE_NAME}:${IMAGE_TAG}"
-                bat "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
-                bat "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:latest"
-            }
-        }
-
-        stage('Login to Docker Hub') {
-            steps {
-                echo '🔐 Logging into Docker Hub...'
-                withCredentials([usernamePassword(
-                    credentialsId: "${DOCKER_CREDENTIALS_ID}",
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASS'
-                )]) {
-                    bat '''
-                    echo %DOCKER_PASS%> docker-pass.txt
-                    docker login -u %DOCKER_USER% --password-stdin < docker-pass.txt
-                    del docker-pass.txt
-                    '''
-                }
-            }
-        }
-
-        stage('Push Docker Image') {
-            steps {
-                echo '🚀 Pushing image to Docker Hub...'
-                bat "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
-                bat "docker push ${IMAGE_NAME}:latest"
-            }
-        }
-    }
-
-    post {
-        success {
-            echo """
-======================================
-✅ PIPELINE SUCCESS
-Image: ${IMAGE_NAME}:${IMAGE_TAG}
-======================================
-"""
-        }
-
-        failure {
-            echo "❌ PIPELINE FAILED"
-        }
-
+    stage('Build & Test') {
+      steps {
+        echo '🔨 Building & Testing...'
+        bat 'mvn clean test -B'
+      }
+      post {
         always {
-            echo '🧹 Cleaning workspace...'
-            bat "docker rmi ${IMAGE_NAME}:${IMAGE_TAG} || exit 0"
-            bat "docker rmi ${IMAGE_NAME}:latest || exit 0"
-            cleanWs()
+          junit '**/target/surefire-reports/*.xml'
         }
+      }
     }
+
+    stage('Docker Build') {
+      steps {
+        echo '🐳 Building Docker Image...'
+        bat "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
+        bat "docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_IMAGE}:latest"
+      }
+    }
+
+    stage('Docker Login & Push') {
+      steps {
+        echo '🔐 Logging in & pushing image...'
+        withCredentials([usernamePassword(
+            credentialsId: 'dockerhub-credentials',
+            usernameVariable: 'DOCKER_USER',
+            passwordVariable: 'DOCKER_PASS'
+        )]) {
+            bat '''
+            echo %DOCKER_PASS%> docker-pass.txt
+            docker login -u %DOCKER_USER% --password-stdin < docker-pass.txt
+            del docker-pass.txt
+
+            docker push %DOCKER_IMAGE%:%DOCKER_TAG%
+            docker push %DOCKER_IMAGE%:latest
+            '''
+        }
+      }
+    }
+
+    stage('Deploy') {
+      steps {
+        echo '🚀 Deploying container...'
+
+        bat "docker stop springboot-app || exit 0"
+        bat "docker rm springboot-app || exit 0"
+
+        bat "docker run -d -p 8084:8084 --name springboot-app ${DOCKER_IMAGE}:latest"
+      }
+    }
+  }
+
+  post {
+    success { 
+      echo '✅ Pipeline succeeded! App running on http://localhost:8484'
+    }
+    failure { 
+      echo '❌ Pipeline failed — check logs!' 
+    }
+  }
 }
