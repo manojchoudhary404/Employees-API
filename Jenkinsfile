@@ -63,8 +63,7 @@ pipeline {
             }
         }
 
-      
-       stage('Docker Push') {
+        stage('Docker Push') {
     steps {
         withCredentials([usernamePassword(
             credentialsId: 'dockerhub-credentials',
@@ -86,7 +85,7 @@ pipeline {
                 bat """
                     docker stop springboot-app || exit 0
                     docker rm springboot-app || exit 0
-                    docker run -d -p 8084:8084 --name springboot-app %DOCKER_IMAGE%:latest
+                    docker run -d -p 9090:8084 --name springboot-app %DOCKER_IMAGE%:latest
                 """
             }
         }
