@@ -85,7 +85,7 @@ employee-api/
 mvn spring-boot:run
 ```
 
-App starts at: http://localhost:8080
+App starts at: http://localhost:8084
 
 ### Option 2 — Docker
 
@@ -99,7 +99,7 @@ docker run -p 8080:8080 employee-api
 
 ### H2 Console (browser)
 
-Visit: http://localhost:8080/h2-console
+Visit: http://localhost:8084/h2-console
 - JDBC URL: `jdbc:h2:mem:employeedb`
 - Username: `sa`
 - Password: (leave blank)
