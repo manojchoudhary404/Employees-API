@@ -1,107 +1,74 @@
 pipeline {
     agent any
-    
+
     tools {
-        maven 'Maven'  
+        maven 'Maven-3.9.9'
     }
-    
+
     environment {
-        DOCKER_IMAGE = 'manojchoudhary67/employee-api'
-        DOCKER_TAG = "${BUILD_NUMBER}"
+        DOCKER_IMAGE = "manojchoudhary67/employee-api:${BUILD_NUMBER}"
     }
 
     stages {
-        stage('Checkout') {
+
+        stage('Checkout Code') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/manojchoudhary404/Employees-API.git',
-                    credentialsId: 'github-credentails'
+                    credentialsId: 'github-credentails',
+                    url: 'https://github.com/manojchoudhary404/Employees-API.git'
             }
         }
 
-        stage('Check Docker') {
+        stage('Build Application') {
             steps {
-                bat '''
-                    echo Checking Docker installation...
-                    docker --version
-                    if %errorlevel% neq 0 (
-                        echo Docker not installed!
-                        exit /b 1
-                    )
-                    
-                    echo Checking Docker daemon...
-                    docker ps
-                    if %errorlevel% neq 0 (
-                        echo ========================================
-                        echo ERROR: Docker daemon is not running!
-                        echo ========================================
-                        echo Please start Docker Desktop first.
-                        echo Then restart Jenkins service.
-                        echo ========================================
-                        exit /b 1
-                    )
-                    echo Docker is ready!
-                '''
+                bat 'mvn clean package -DskipTests'
             }
         }
 
-        stage('Build & Test') {
+        stage('Build Docker Image') {
             steps {
-                bat 'mvn clean test'
+                bat 'docker build -t %DOCKER_IMAGE% .'
             }
-            post {
-                always {
-                    junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
+        }
+
+        stage('Verify Docker Image') {
+            steps {
+                bat 'docker images'
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'docker-credentails',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    bat """
+                    docker login -u %DOCKER_USER% -p %DOCKER_PASS%
+                    docker push %DOCKER_IMAGE%
+                    """
                 }
             }
         }
 
-        stage('Docker Build') {
-            steps {
-                bat "docker build -t %DOCKER_IMAGE%:%DOCKER_TAG% ."
-                bat "docker tag %DOCKER_IMAGE%:%DOCKER_TAG% %DOCKER_IMAGE%:latest"
-            }
-        }
-
-        stage('Docker Push') {
-    steps {
-        withCredentials([usernamePassword(
-            credentialsId: 'dockerhub-credentials',
-            usernameVariable: 'DOCKER_USERNAME',
-            passwordVariable: 'DOCKER_PASSWORD'
-        )]) {
+       stage('Run Container') {
+        steps {
             bat '''
-                echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin
-                docker push %DOCKER_IMAGE%:%DOCKER_TAG%
-                docker push %DOCKER_IMAGE%:latest
-                docker logout
+            docker stop employee-container
+            docker rm employee-container
+            docker run -d -p 8184:8184 --name employee-container %DOCKER_IMAGE%
+            docker ps -a
             '''
+                }
         }
-    }
-}
-
-        stage('Deploy') {
-            steps {
-                bat """
-                    docker stop springboot-app || exit 0
-                    docker rm springboot-app || exit 0
-                    docker run -d -p 9090:8084 --name springboot-app %DOCKER_IMAGE%:latest
-                """
-            }
-        }
-    }
+   }
 
     post {
-        success { 
-            echo '========================================'
-            echo '✅ Pipeline completed successfully!'
-            echo '🌐 Application: http://localhost:8084'
-            echo '========================================'
+        success {
+            echo 'Pipeline executed successfully!'
         }
-        failure { 
-            echo '========================================'
-            echo '❌ Pipeline failed!'
-            echo '========================================'
+        failure {
+            echo 'Pipeline failed. Check logs above.'
         }
     }
-}
