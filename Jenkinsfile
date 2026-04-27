@@ -39,7 +39,7 @@ pipeline {
             }
         }
 
-        stage('Docker Login & Push') {
+        stage('Docker Login') {
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'dockerhub-credentials',
@@ -47,26 +47,26 @@ pipeline {
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
                     bat """
-                    echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
-
-                    IF %ERRORLEVEL% NEQ 0 (
-                        echo Docker login failed
-                        exit /b 1
-                    )
-
-                    docker push %BUILD_IMAGE%
-                    docker push %LATEST_IMAGE%
-
-                    docker logout
+                    docker login -u %DOCKER_USER% --password-stdin < echo %DOCKER_PASS%
                     """
                 }
+            }
+        }
+
+        stage('Push Image') {
+            steps {
+                bat """
+                docker push %BUILD_IMAGE%
+                docker push %LATEST_IMAGE%
+                docker logout
+                """
             }
         }
 
         stage('Deploy Container') {
             steps {
                 bat """
-                docker rm -f %CONTAINER_NAME% || echo No existing container
+                docker rm -f %CONTAINER_NAME% 2>nul || echo Container not running
 
                 docker run -d ^
                 -p %PORT%:%PORT% ^
