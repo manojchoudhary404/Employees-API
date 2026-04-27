@@ -1,0 +1,1092 @@
+Started by user Manoj Choudhary
+Replayed #51
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in C:\ProgramData\Jenkins\.jenkins\workspace\employee-api-pipeline
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+The recommended git tool is: NONE
+No credentials specified
+Cloning the remote Git repository
+Cloning repository https://github.com/manojchoudhary404/Employees-API
+ > C:\Users\manoj.choudhary\AppData\Local\Programs\Git\cmd\git.exe init C:\ProgramData\Jenkins\.jenkins\workspace\employee-api-pipeline # timeout=10
+Fetching upstream changes from https://github.com/manojchoudhary404/Employees-API
+ > C:\Users\manoj.choudhary\AppData\Local\Programs\Git\cmd\git.exe --version # timeout=10
+ > git --version # 'git version 2.54.0.windows.1'
+ > C:\Users\manoj.choudhary\AppData\Local\Programs\Git\cmd\git.exe fetch --tags --force --progress -- https://github.com/manojchoudhary404/Employees-API +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > C:\Users\manoj.choudhary\AppData\Local\Programs\Git\cmd\git.exe config remote.origin.url https://github.com/manojchoudhary404/Employees-API # timeout=10
+ > C:\Users\manoj.choudhary\AppData\Local\Programs\Git\cmd\git.exe config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+ > C:\Users\manoj.choudhary\AppData\Local\Programs\Git\cmd\git.exe rev-parse "refs/remotes/origin/main^{commit}" # timeout=10
+Checking out Revision cbfd34d99ab2a55d763c28029283e48d56f6f93e (refs/remotes/origin/main)
+ > C:\Users\manoj.choudhary\AppData\Local\Programs\Git\cmd\git.exe config core.sparsecheckout # timeout=10
+ > C:\Users\manoj.choudhary\AppData\Local\Programs\Git\cmd\git.exe checkout -f cbfd34d99ab2a55d763c28029283e48d56f6f93e # timeout=10
+Commit message: "Fixed1"
+ > C:\Users\manoj.choudhary\AppData\Local\Programs\Git\cmd\git.exe rev-list --no-walk cbfd34d99ab2a55d763c28029283e48d56f6f93e # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Tool Install)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout Code)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] echo
+ðŸ“¥ Pulling code from GitHub...
+[Pipeline] git
+The recommended git tool is: NONE
+Warning: CredentialId "github-credentails" could not be found.
+ > C:\Users\manoj.choudhary\AppData\Local\Programs\Git\cmd\git.exe rev-parse --resolve-git-dir C:\ProgramData\Jenkins\.jenkins\workspace\employee-api-pipeline\.git # timeout=10
+Fetching changes from the remote Git repository
+ > C:\Users\manoj.choudhary\AppData\Local\Programs\Git\cmd\git.exe config remote.origin.url https://github.com/manojchoudhary404/Employees-API.git # timeout=10
+Fetching upstream changes from https://github.com/manojchoudhary404/Employees-API.git
+ > C:\Users\manoj.choudhary\AppData\Local\Programs\Git\cmd\git.exe --version # timeout=10
+ > git --version # 'git version 2.54.0.windows.1'
+ > C:\Users\manoj.choudhary\AppData\Local\Programs\Git\cmd\git.exe fetch --tags --force --progress -- https://github.com/manojchoudhary404/Employees-API.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > C:\Users\manoj.choudhary\AppData\Local\Programs\Git\cmd\git.exe rev-parse "refs/remotes/origin/main^{commit}" # timeout=10
+Checking out Revision cbfd34d99ab2a55d763c28029283e48d56f6f93e (refs/remotes/origin/main)
+ > C:\Users\manoj.choudhary\AppData\Local\Programs\Git\cmd\git.exe config core.sparsecheckout # timeout=10
+ > C:\Users\manoj.choudhary\AppData\Local\Programs\Git\cmd\git.exe checkout -f cbfd34d99ab2a55d763c28029283e48d56f6f93e # timeout=10
+ > C:\Users\manoj.choudhary\AppData\Local\Programs\Git\cmd\git.exe branch -a -v --no-abbrev # timeout=10
+ > C:\Users\manoj.choudhary\AppData\Local\Programs\Git\cmd\git.exe checkout -b main cbfd34d99ab2a55d763c28029283e48d56f6f93e # timeout=10
+Commit message: "Fixed1"
+[Pipeline] echo
+âœ… Code checkout successful!
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build Application)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] echo
+ðŸ”¨ Building Spring Boot application...
+[Pipeline] bat
+
+C:\ProgramData\Jenkins\.jenkins\workspace\employee-api-pipeline>mvn clean package -DskipTests 
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------------< com.example:employee-api >----------------------
+[INFO] Building employee-api 0.0.1-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.3.2:clean (default-clean) @ employee-api ---
+[INFO] 
+[INFO] --- maven-resources-plugin:3.3.1:resources (default-resources) @ employee-api ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.11.0:compile (default-compile) @ employee-api ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 8 source files with javac [debug release 17] to target\classes
+[INFO] 
+[INFO] --- maven-resources-plugin:3.3.1:testResources (default-testResources) @ employee-api ---
+[INFO] skip non existing resourceDirectory C:\ProgramData\Jenkins\.jenkins\workspace\employee-api-pipeline\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.11.0:testCompile (default-testCompile) @ employee-api ---
+[INFO] Changes detected - recompiling the module! :dependency
+[INFO] Compiling 2 source files with javac [debug release 17] to target\test-classes
+[INFO] 
+[INFO] --- maven-surefire-plugin:3.0.0:test (default-test) @ employee-api ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-jar-plugin:3.3.0:jar (default-jar) @ employee-api ---
+[INFO] Building jar: C:\ProgramData\Jenkins\.jenkins\workspace\employee-api-pipeline\target\employee-api-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- spring-boot-maven-plugin:3.2.0:repackage (repackage) @ employee-api ---
+[INFO] Replacing main artifact C:\ProgramData\Jenkins\.jenkins\workspace\employee-api-pipeline\target\employee-api-0.0.1-SNAPSHOT.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to C:\ProgramData\Jenkins\.jenkins\workspace\employee-api-pipeline\target\employee-api-0.0.1-SNAPSHOT.jar.original
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  36.243 s
+[INFO] Finished at: 2026-04-27T13:40:35+05:30
+[INFO] ------------------------------------------------------------------------
+[Pipeline] echo
+âœ… JAR file created successfully!
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Run Tests)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] echo
+ðŸ§ª Running unit tests...
+[Pipeline] bat
+
+C:\ProgramData\Jenkins\.jenkins\workspace\employee-api-pipeline>mvn test 
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------------< com.example:employee-api >----------------------
+[INFO] Building employee-api 0.0.1-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-resources-plugin:3.3.1:resources (default-resources) @ employee-api ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.11.0:compile (default-compile) @ employee-api ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:3.3.1:testResources (default-testResources) @ employee-api ---
+[INFO] skip non existing resourceDirectory C:\ProgramData\Jenkins\.jenkins\workspace\employee-api-pipeline\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.11.0:testCompile (default-testCompile) @ employee-api ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-surefire-plugin:3.0.0:test (default-test) @ employee-api ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.example.employeeapi.EmployeeControllerIntegrationTest
+13:40:48.201 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.example.employeeapi.EmployeeControllerIntegrationTest]: EmployeeControllerIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+13:40:48.446 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.example.employeeapi.EmployeeApiApplication for test class com.example.employeeapi.EmployeeControllerIntegrationTest
+13:40:48.801 [main] INFO org.springframework.boot.devtools.restart.RestartApplicationListener -- Restart disabled due to context in which it is running
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-04-27T13:40:49.219+05:30  INFO 20952 --- [employee-api] [           main] c.e.e.EmployeeControllerIntegrationTest  : Starting EmployeeControllerIntegrationTest using Java 17.0.12 with PID 20952 (started by INPL-DT-545$ in C:\ProgramData\Jenkins\.jenkins\workspace\employee-api-pipeline)
+2026-04-27T13:40:49.221+05:30  INFO 20952 --- [employee-api] [           main] c.e.e.EmployeeControllerIntegrationTest  : No active profile set, falling back to 1 default profile: "default"
+2026-04-27T13:40:50.971+05:30  INFO 20952 --- [employee-api] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-27T13:40:51.083+05:30  INFO 20952 --- [employee-api] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 98 ms. Found 1 JPA repository interface.
+2026-04-27T13:40:52.602+05:30  INFO 20952 --- [employee-api] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-27T13:40:52.734+05:30  INFO 20952 --- [employee-api] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.3.1.Final
+2026-04-27T13:40:52.933+05:30  INFO 20952 --- [employee-api] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-04-27T13:40:53.565+05:30  INFO 20952 --- [employee-api] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-27T13:40:53.609+05:30  INFO 20952 --- [employee-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-27T13:40:54.050+05:30  INFO 20952 --- [employee-api] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:employeedb user=SA
+2026-04-27T13:40:54.052+05:30  INFO 20952 --- [employee-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-27T13:40:54.084+05:30  WARN 20952 --- [employee-api] [           main] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-27T13:40:55.185+05:30  INFO 20952 --- [employee-api] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    drop table if exists employees cascade 
+Hibernate: 
+    create table employees (
+        salary float(53),
+        id bigint generated by default as identity,
+        name varchar(255),
+        role varchar(255),
+        primary key (id)
+    )
+2026-04-27T13:40:55.236+05:30  INFO 20952 --- [employee-api] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-27T13:40:56.149+05:30  WARN 20952 --- [employee-api] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-27T13:40:57.538+05:30  INFO 20952 --- [employee-api] [           main] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:employeedb'
+2026-04-27T13:40:57.670+05:30  INFO 20952 --- [employee-api] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-04-27T13:40:57.670+05:30  INFO 20952 --- [employee-api] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-04-27T13:40:57.686+05:30  INFO 20952 --- [employee-api] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2026-04-27T13:40:57.715+05:30  INFO 20952 --- [employee-api] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 44 ms
+2026-04-27T13:40:57.888+05:30  INFO 20952 --- [employee-api] [           main] c.e.e.EmployeeControllerIntegrationTest  : Started EmployeeControllerIntegrationTest in 9.116 seconds (process running for 11.239)
+Hibernate: 
+    insert 
+    into
+        employees
+        (name, role, salary, id) 
+    values
+        (?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        employees
+        (name, role, salary, id) 
+    values
+        (?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        employees
+        (name, role, salary, id) 
+    values
+        (?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        employees
+        (name, role, salary, id) 
+    values
+        (?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        employees
+        (name, role, salary, id) 
+    values
+        (?, ?, ?, default)
+?  Sample employees loaded into H2 database.
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+Hibernate: 
+    select
+        e1_0.id,
+        e1_0.name,
+        e1_0.role,
+        e1_0.salary 
+    from
+        employees e1_0
+Hibernate: 
+    delete 
+    from
+        employees 
+    where
+        id=?
+Hibernate: 
+    delete 
+    from
+        employees 
+    where
+        id=?
+Hibernate: 
+    delete 
+    from
+        employees 
+    where
+        id=?
+Hibernate: 
+    delete 
+    from
+        employees 
+    where
+        id=?
+Hibernate: 
+    delete 
+    from
+        employees 
+    where
+        id=?
+Hibernate: 
+    insert 
+    into
+        employees
+        (name, role, salary, id) 
+    values
+        (?, ?, ?, default)
+Hibernate: 
+    select
+        e1_0.id,
+        e1_0.name,
+        e1_0.role,
+        e1_0.salary 
+    from
+        employees e1_0 
+    where
+        e1_0.id=?
+Hibernate: 
+    delete 
+    from
+        employees 
+    where
+        id=?
+Hibernate: 
+    select
+        e1_0.id,
+        e1_0.name,
+        e1_0.role,
+        e1_0.salary 
+    from
+        employees e1_0 
+    where
+        e1_0.id=?
+Hibernate: 
+    select
+        e1_0.id,
+        e1_0.name,
+        e1_0.role,
+        e1_0.salary 
+    from
+        employees e1_0
+Hibernate: 
+    insert 
+    into
+        employees
+        (name, role, salary, id) 
+    values
+        (?, ?, ?, default)
+Hibernate: 
+    select
+        e1_0.id,
+        e1_0.name,
+        e1_0.role,
+        e1_0.salary 
+    from
+        employees e1_0 
+    where
+        e1_0.id=?
+Hibernate: 
+    select
+        e1_0.id,
+        e1_0.name,
+        e1_0.role,
+        e1_0.salary 
+    from
+        employees e1_0
+Hibernate: 
+    delete 
+    from
+        employees 
+    where
+        id=?
+Hibernate: 
+    insert 
+    into
+        employees
+        (name, role, salary, id) 
+    values
+        (?, ?, ?, default)
+Hibernate: 
+    select
+        e1_0.id,
+        e1_0.name,
+        e1_0.role,
+        e1_0.salary 
+    from
+        employees e1_0 
+    where
+        e1_0.id=?
+Hibernate: 
+    select
+        e1_0.id,
+        e1_0.name,
+        e1_0.role,
+        e1_0.salary 
+    from
+        employees e1_0
+Hibernate: 
+    delete 
+    from
+        employees 
+    where
+        id=?
+Hibernate: 
+    insert 
+    into
+        employees
+        (name, role, salary, id) 
+    values
+        (?, ?, ?, default)
+Hibernate: 
+    select
+        e1_0.id,
+        e1_0.name,
+        e1_0.role,
+        e1_0.salary 
+    from
+        employees e1_0 
+    where
+        e1_0.id=?
+Hibernate: 
+    update
+        employees 
+    set
+        name=?,
+        role=?,
+        salary=? 
+    where
+        id=?
+Hibernate: 
+    select
+        e1_0.id,
+        e1_0.name,
+        e1_0.role,
+        e1_0.salary 
+    from
+        employees e1_0
+Hibernate: 
+    delete 
+    from
+        employees 
+    where
+        id=?
+Hibernate: 
+    insert 
+    into
+        employees
+        (name, role, salary, id) 
+    values
+        (?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        employees
+        (name, role, salary, id) 
+    values
+        (?, ?, ?, default)
+Hibernate: 
+    select
+        e1_0.id,
+        e1_0.name,
+        e1_0.role,
+        e1_0.salary 
+    from
+        employees e1_0
+Hibernate: 
+    delete 
+    from
+        employees 
+    where
+        id=?
+Hibernate: 
+    delete 
+    from
+        employees 
+    where
+        id=?
+Hibernate: 
+    insert 
+    into
+        employees
+        (name, role, salary, id) 
+    values
+        (?, ?, ?, default)
+Hibernate: 
+    select
+        e1_0.id,
+        e1_0.name,
+        e1_0.role,
+        e1_0.salary 
+    from
+        employees e1_0
+Hibernate: 
+    select
+        e1_0.id,
+        e1_0.name,
+        e1_0.role,
+        e1_0.salary 
+    from
+        employees e1_0
+Hibernate: 
+    delete 
+    from
+        employees 
+    where
+        id=?
+Hibernate: 
+    insert 
+    into
+        employees
+        (name, role, salary, id) 
+    values
+        (?, ?, ?, default)
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 12.552 s - in com.example.employeeapi.EmployeeControllerIntegrationTest
+[INFO] Running com.example.employeeapi.EmployeeServiceTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.527 s - in com.example.employeeapi.EmployeeServiceTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  18.705 s
+[INFO] Finished at: 2026-04-27T13:41:01+05:30
+[INFO] ------------------------------------------------------------------------
+[Pipeline] echo
+âœ… All tests passed!
+Post stage
+[Pipeline] junit
+Recording test results
+[Checks API] No suitable checks publisher found.
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build Docker Image)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] echo
+ðŸ�³ Building Docker image...
+[Pipeline] bat
+
+C:\ProgramData\Jenkins\.jenkins\workspace\employee-api-pipeline>docker build -t manojchoudhary67/employee-api:53 . 
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile:
+#1 transferring dockerfile: 682B 0.6s done
+#1 DONE 1.2s
+
+#2 [internal] load metadata for docker.io/library/eclipse-temurin:17-jre-alpine
+#2 DONE 4.0s
+
+#3 [internal] load metadata for docker.io/library/maven:3.9.5-eclipse-temurin-17
+#3 DONE 4.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context:
+#4 transferring context: 2B 0.0s done
+#4 DONE 0.3s
+
+#5 [internal] load build context
+#5 DONE 0.0s
+
+#6 [builder 1/6] FROM docker.io/library/maven:3.9.5-eclipse-temurin-17@sha256:bb7ab7f3e72006e080fc620f2884f183418a8c7a78082f1b1b6184f12758ef8d
+#6 resolve docker.io/library/maven:3.9.5-eclipse-temurin-17@sha256:bb7ab7f3e72006e080fc620f2884f183418a8c7a78082f1b1b6184f12758ef8d
+#6 resolve docker.io/library/maven:3.9.5-eclipse-temurin-17@sha256:bb7ab7f3e72006e080fc620f2884f183418a8c7a78082f1b1b6184f12758ef8d 0.6s done
+#6 DONE 0.7s
+
+#7 [stage-1 1/5] FROM docker.io/library/eclipse-temurin:17-jre-alpine@sha256:88c0002860cda56384d5ed3b2da4d0d9a2b44dc2ee4dc02344be985bd8b524bc
+#7 resolve docker.io/library/eclipse-temurin:17-jre-alpine@sha256:88c0002860cda56384d5ed3b2da4d0d9a2b44dc2ee4dc02344be985bd8b524bc 0.7s done
+#7 DONE 0.8s
+
+#5 [internal] load build context
+#5 transferring context: 28.59kB 0.1s done
+#5 DONE 0.6s
+
+#8 [stage-1 2/5] WORKDIR /app
+#8 CACHED
+
+#9 [builder 6/6] RUN mvn clean package -DskipTests -B
+#9 CACHED
+
+#10 [builder 5/6] COPY src ./src
+#10 CACHED
+
+#11 [stage-1 4/5] COPY --from=builder /app/target/*.jar app.jar
+#11 CACHED
+
+#12 [stage-1 3/5] RUN addgroup -S spring && adduser -S spring -G spring
+#12 CACHED
+
+#13 [builder 3/6] COPY pom.xml .
+#13 CACHED
+
+#14 [builder 2/6] WORKDIR /app
+#14 CACHED
+
+#15 [builder 4/6] RUN mvn dependency:go-offline -B
+#15 CACHED
+
+#16 [stage-1 5/5] RUN apk add --no-cache curl
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers 0.0s done
+#17 exporting manifest sha256:aee94d84b57e40d7c6a7d79f1aa84ae5fe9280d3a2594d9c3fb5153f4a274063 0.1s done
+#17 exporting config sha256:d78864f9c9132bb933047543190876d42ed84e9f05c795783285f1c1745cf866
+#17 exporting config sha256:d78864f9c9132bb933047543190876d42ed84e9f05c795783285f1c1745cf866 0.0s done
+#17 exporting attestation manifest sha256:cf557bf4565c6cdee7f10d75181c834b84dae8a08979f148f592d43873af7bf0
+#17 exporting attestation manifest sha256:cf557bf4565c6cdee7f10d75181c834b84dae8a08979f148f592d43873af7bf0 0.9s done
+#17 exporting manifest list sha256:8d9957a2e239ccd09352d843ccc8390bb8bf8fb113ae1a793f90730429009369
+#17 exporting manifest list sha256:8d9957a2e239ccd09352d843ccc8390bb8bf8fb113ae1a793f90730429009369 0.5s done
+#17 naming to docker.io/manojchoudhary67/employee-api:53
+#17 naming to docker.io/manojchoudhary67/employee-api:53 0.1s done
+#17 unpacking to docker.io/manojchoudhary67/employee-api:53 0.1s done
+#17 DONE 2.4s
+WARNING: current commit information was not captured by the build: git was not found in the system: exec: "git.exe": executable file not found in %PATH%
+[Pipeline] bat
+
+C:\ProgramData\Jenkins\.jenkins\workspace\employee-api-pipeline>docker tag manojchoudhary67/employee-api:53 manojchoudhary67/employee-api:latest 
+[Pipeline] echo
+âœ… Docker image built successfully!
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Push to Docker Hub)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] echo
+â˜�ï¸� Pushing image to Docker Hub...
+[Pipeline] withCredentials
+Masking supported pattern matches of %DOCKER_PASS%
+[Pipeline] {
+[Pipeline] bat
+
+C:\ProgramData\Jenkins\.jenkins\workspace\employee-api-pipeline>docker login -u manojchoudhary67 -p **** 
+WARNING! Using --password via the CLI is insecure. Use --password-stdin.
+Login Succeeded
+[Pipeline] bat
+
+C:\ProgramData\Jenkins\.jenkins\workspace\employee-api-pipeline>docker push manojchoudhary67/employee-api:53 
+The push refers to repository [docker.io/manojchoudhary67/employee-api]
+6b0f9a83cd25: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+09f01c4101f5: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+d8e2b8878e38: Waiting
+3556979005cb: Waiting
+66119964057c: Waiting
+631b34f45eb9: Waiting
+3556979005cb: Waiting
+66119964057c: Waiting
+631b34f45eb9: Waiting
+6b0f9a83cd25: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+09f01c4101f5: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+d8e2b8878e38: Waiting
+631b34f45eb9: Waiting
+6b0f9a83cd25: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+09f01c4101f5: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+d8e2b8878e38: Waiting
+3556979005cb: Waiting
+66119964057c: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+d8e2b8878e38: Waiting
+3556979005cb: Waiting
+66119964057c: Waiting
+631b34f45eb9: Waiting
+6b0f9a83cd25: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+09f01c4101f5: Waiting
+66119964057c: Waiting
+631b34f45eb9: Waiting
+6b0f9a83cd25: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+09f01c4101f5: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+d8e2b8878e38: Waiting
+3556979005cb: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+09f01c4101f5: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+d8e2b8878e38: Waiting
+3556979005cb: Waiting
+66119964057c: Waiting
+631b34f45eb9: Waiting
+6b0f9a83cd25: Waiting
+66119964057c: Waiting
+631b34f45eb9: Waiting
+6b0f9a83cd25: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+09f01c4101f5: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+d8e2b8878e38: Waiting
+3556979005cb: Waiting
+66119964057c: Waiting
+631b34f45eb9: Waiting
+6b0f9a83cd25: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+09f01c4101f5: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+d8e2b8878e38: Waiting
+3556979005cb: Waiting
+66119964057c: Waiting
+631b34f45eb9: Waiting
+6b0f9a83cd25: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+09f01c4101f5: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+d8e2b8878e38: Waiting
+3556979005cb: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+d8e2b8878e38: Waiting
+3556979005cb: Waiting
+66119964057c: Waiting
+631b34f45eb9: Waiting
+6b0f9a83cd25: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+09f01c4101f5: Waiting
+66119964057c: Waiting
+631b34f45eb9: Waiting
+6b0f9a83cd25: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+09f01c4101f5: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+d8e2b8878e38: Waiting
+3556979005cb: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+d8e2b8878e38: Waiting
+3556979005cb: Waiting
+66119964057c: Waiting
+631b34f45eb9: Waiting
+6b0f9a83cd25: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+09f01c4101f5: Waiting
+631b34f45eb9: Waiting
+6b0f9a83cd25: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+09f01c4101f5: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+d8e2b8878e38: Waiting
+3556979005cb: Waiting
+66119964057c: Waiting
+631b34f45eb9: Waiting
+6b0f9a83cd25: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+09f01c4101f5: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+d8e2b8878e38: Waiting
+3556979005cb: Waiting
+66119964057c: Waiting
+775c53a23a89: Waiting
+09f01c4101f5: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+d8e2b8878e38: Waiting
+3556979005cb: Waiting
+66119964057c: Waiting
+631b34f45eb9: Waiting
+6b0f9a83cd25: Waiting
+6a0ac1617861: Waiting
+3556979005cb: Waiting
+66119964057c: Waiting
+631b34f45eb9: Waiting
+6b0f9a83cd25: Layer already exists
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+09f01c4101f5: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+d8e2b8878e38: Waiting
+66119964057c: Waiting
+631b34f45eb9: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+09f01c4101f5: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+d8e2b8878e38: Waiting
+3556979005cb: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+d8e2b8878e38: Waiting
+3556979005cb: Waiting
+66119964057c: Waiting
+631b34f45eb9: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+09f01c4101f5: Waiting
+66119964057c: Waiting
+631b34f45eb9: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+09f01c4101f5: Layer already exists
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+d8e2b8878e38: Layer already exists
+3556979005cb: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+3556979005cb: Waiting
+66119964057c: Waiting
+631b34f45eb9: Waiting
+631b34f45eb9: Layer already exists
+6a0ac1617861: Layer already exists
+775c53a23a89: Layer already exists
+9822751ab6ee: Layer already exists
+070a7b9fef91: Layer already exists
+3556979005cb: Layer already exists
+66119964057c: Waiting
+66119964057c: Pushed
+53: digest: sha256:8d9957a2e239ccd09352d843ccc8390bb8bf8fb113ae1a793f90730429009369 size: 856
+[Pipeline] bat
+
+C:\ProgramData\Jenkins\.jenkins\workspace\employee-api-pipeline>docker push manojchoudhary67/employee-api:latest 
+The push refers to repository [docker.io/manojchoudhary67/employee-api]
+66119964057c: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+6b0f9a83cd25: Waiting
+09f01c4101f5: Waiting
+d8e2b8878e38: Waiting
+631b34f45eb9: Waiting
+3556979005cb: Waiting
+66119964057c: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+6b0f9a83cd25: Waiting
+09f01c4101f5: Waiting
+d8e2b8878e38: Waiting
+631b34f45eb9: Waiting
+3556979005cb: Waiting
+09f01c4101f5: Waiting
+d8e2b8878e38: Waiting
+631b34f45eb9: Waiting
+3556979005cb: Waiting
+66119964057c: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+6b0f9a83cd25: Waiting
+66119964057c: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+6b0f9a83cd25: Waiting
+09f01c4101f5: Waiting
+d8e2b8878e38: Waiting
+631b34f45eb9: Waiting
+3556979005cb: Waiting
+66119964057c: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+6b0f9a83cd25: Waiting
+09f01c4101f5: Waiting
+d8e2b8878e38: Waiting
+631b34f45eb9: Waiting
+3556979005cb: Waiting
+66119964057c: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+6b0f9a83cd25: Waiting
+09f01c4101f5: Waiting
+d8e2b8878e38: Waiting
+631b34f45eb9: Waiting
+3556979005cb: Waiting
+070a7b9fef91: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+6b0f9a83cd25: Waiting
+09f01c4101f5: Waiting
+d8e2b8878e38: Waiting
+631b34f45eb9: Waiting
+3556979005cb: Waiting
+66119964057c: Waiting
+9822751ab6ee: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+6b0f9a83cd25: Waiting
+09f01c4101f5: Waiting
+d8e2b8878e38: Waiting
+631b34f45eb9: Waiting
+3556979005cb: Waiting
+66119964057c: Waiting
+66119964057c: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+6b0f9a83cd25: Waiting
+09f01c4101f5: Waiting
+d8e2b8878e38: Waiting
+631b34f45eb9: Waiting
+3556979005cb: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+6b0f9a83cd25: Waiting
+09f01c4101f5: Waiting
+d8e2b8878e38: Waiting
+631b34f45eb9: Waiting
+3556979005cb: Waiting
+66119964057c: Waiting
+66119964057c: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+6b0f9a83cd25: Waiting
+09f01c4101f5: Waiting
+d8e2b8878e38: Waiting
+631b34f45eb9: Waiting
+3556979005cb: Waiting
+66119964057c: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+6b0f9a83cd25: Waiting
+09f01c4101f5: Waiting
+d8e2b8878e38: Waiting
+631b34f45eb9: Waiting
+3556979005cb: Waiting
+6b0f9a83cd25: Waiting
+09f01c4101f5: Waiting
+d8e2b8878e38: Layer already exists
+631b34f45eb9: Waiting
+3556979005cb: Waiting
+66119964057c: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+631b34f45eb9: Waiting
+3556979005cb: Waiting
+66119964057c: Waiting
+9822751ab6ee: Waiting
+070a7b9fef91: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+6b0f9a83cd25: Waiting
+09f01c4101f5: Waiting
+66119964057c: Already exists
+9822751ab6ee: Waiting
+070a7b9fef91: Layer already exists
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+6b0f9a83cd25: Waiting
+09f01c4101f5: Waiting
+631b34f45eb9: Waiting
+3556979005cb: Waiting
+9822751ab6ee: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+6b0f9a83cd25: Waiting
+09f01c4101f5: Waiting
+631b34f45eb9: Waiting
+3556979005cb: Waiting
+3556979005cb: Waiting
+9822751ab6ee: Waiting
+6a0ac1617861: Waiting
+775c53a23a89: Waiting
+6b0f9a83cd25: Waiting
+09f01c4101f5: Waiting
+631b34f45eb9: Waiting
+9822751ab6ee: Layer already exists
+6a0ac1617861: Layer already exists
+775c53a23a89: Layer already exists
+6b0f9a83cd25: Layer already exists
+09f01c4101f5: Layer already exists
+631b34f45eb9: Layer already exists
+3556979005cb: Layer already exists
+latest: digest: sha256:8d9957a2e239ccd09352d843ccc8390bb8bf8fb113ae1a793f90730429009369 size: 856
+[Pipeline] bat
+
+C:\ProgramData\Jenkins\.jenkins\workspace\employee-api-pipeline>docker logout 
+Removing login credentials for https://index.docker.io/v1/
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] echo
+âœ… Image pushed to Docker Hub!
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy Container)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] echo
+ðŸš€ Deploying container...
+[Pipeline] bat
+
+C:\ProgramData\Jenkins\.jenkins\workspace\employee-api-pipeline>docker stop employee-container   || echo Container was not running 
+employee-container
+[Pipeline] bat
+
+C:\ProgramData\Jenkins\.jenkins\workspace\employee-api-pipeline>docker rm employee-container   || echo Container did not exist 
+employee-container
+[Pipeline] bat
+
+C:\ProgramData\Jenkins\.jenkins\workspace\employee-api-pipeline>docker run -d -p 8084:8084 --name employee-container manojchoudhary67/employee-api:latest 
+e6580766399805df3feab372165a8478cc3aa1b6ef5794a0475cf854389c88c7
+[Pipeline] bat
+
+C:\ProgramData\Jenkins\.jenkins\workspace\employee-api-pipeline>docker ps 
+CONTAINER ID   IMAGE                                  COMMAND               CREATED         STATUS                            PORTS                                         NAMES
+e65807663998   manojchoudhary67/employee-api:latest   "java -jar app.jar"   6 seconds ago   Up 3 seconds (health: starting)   0.0.0.0:8084->8084/tcp, [::]:8084->8084/tcp   employee-container
+[Pipeline] echo
+âœ… Container deployed on port 8080!
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] cleanWs
+[WS-CLEANUP] Deleting project workspace...
+[WS-CLEANUP] Deferred wipeout is used...
+[WS-CLEANUP] done
+[Pipeline] echo
+ðŸŽ‰ âœ… Pipeline SUCCESSFUL!
+[Pipeline] echo
+ðŸ‘‰ App running at: http://localhost:8084/employees
+[Pipeline] echo
+ðŸ‘‰ Docker Hub : https://hub.docker.com/r/manojchoudhary67/employee-api
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
