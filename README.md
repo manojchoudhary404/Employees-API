@@ -32,6 +32,7 @@ employee-api/
 │       └── java/com/example/employeeapi/
 │           ├── EmployeeServiceTest.java         ← Unit tests (Mockito)
 │           └── EmployeeControllerIntegrationTest.java ← Integration tests
+├── ProjectScreenshots                          ← Project Success Screenshots are availabe here.
 ├── Dockerfile                                  ← Multi-stage Docker build
 ├── Jenkinsfile                                 ← CI/CD pipeline (5 stages)
 ├── pom.xml                                     ← Maven dependencies
