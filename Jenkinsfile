@@ -97,33 +97,25 @@ pipeline {
         // never fails if container does not exist yet
         // ─────────────────────────────────────────
         stage('Deploy Container') {
-            steps {
-                echo 'Deploying container...'
+    steps {
+        echo 'Deploying container...'
 
-                // Stop old container - ignore error if not running
-                bat """
-                    docker stop %CONTAINER_NAME% 2>nul
-                    exit /b 0
-                """
+        // Stop container (ignore error if not running)
+        bat "docker stop %CONTAINER_NAME% 2>nul || ver >nul"
 
-                // Remove old container - ignore error if not existing
-                bat """
-                    docker rm %CONTAINER_NAME% 2>nul
-                    exit /b 0
-                """
+        // Remove container (ignore error if not exists)
+        bat "docker rm %CONTAINER_NAME% 2>nul || ver >nul"
 
-                // Run brand new container
-                bat "docker run -d -p %APP_PORT%:%APP_PORT% --name %CONTAINER_NAME% %LATEST_IMAGE%"
+        // Run new container
+        bat "docker run -d -p %APP_PORT%:%APP_PORT% --name %CONTAINER_NAME% %LATEST_IMAGE%"
 
-                // Show all running containers
-                bat "docker ps"
+        // Show running containers
+        bat "docker ps"
 
-                echo 'Container deployed successfully on port 8084!'
-                echo 'Test at: http://localhost:8084/employees'
-            }
-        }
-
+        echo 'Container deployed successfully on port 8084!'
+        echo 'Test at: http://localhost:8084/employees'
     }
+}
 
     // ─────────────────────────────────────────
     // POST ACTIONS
