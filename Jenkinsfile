@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven-3.9.9'
+        maven 'Maven-3.8.1'
         jdk 'JDK-17'
     }
 
@@ -47,7 +47,7 @@ pipeline {
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
                     bat """
-                    docker login -u %DOCKER_USER% --password-stdin < echo %DOCKER_PASS%
+                    echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
                     """
                 }
             }
@@ -58,7 +58,6 @@ pipeline {
                 bat """
                 docker push %BUILD_IMAGE%
                 docker push %LATEST_IMAGE%
-                docker logout
                 """
             }
         }
