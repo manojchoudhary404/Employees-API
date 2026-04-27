@@ -23,11 +23,11 @@ pipeline {
         // ─────────────────────────────────────────
         stage('Checkout Code') {
             steps {
-                echo '📥 Pulling code from GitHub...'
+                echo 'Pulling code from GitHub...'
                 git branch: 'main',
                     credentialsId: 'github-credentails',
                     url: 'https://github.com/manojchoudhary404/Employees-API.git'
-                echo '✅ Code checkout successful!'
+                echo 'Code checkout successful!'
             }
         }
 
@@ -36,9 +36,9 @@ pipeline {
         // ─────────────────────────────────────────
         stage('Build Application') {
             steps {
-                echo '🔨 Building Spring Boot application...'
+                echo 'Building Spring Boot application...'
                 bat 'mvn clean package -DskipTests'
-                echo '✅ JAR file created successfully!'
+                echo 'JAR file created successfully!'
             }
         }
 
@@ -47,9 +47,9 @@ pipeline {
         // ─────────────────────────────────────────
         stage('Run Tests') {
             steps {
-                echo '🧪 Running unit tests...'
+                echo 'Running unit tests...'
                 bat 'mvn test'
-                echo '✅ All tests passed!'
+                echo 'All tests passed!'
             }
             post {
                 always {
@@ -64,10 +64,10 @@ pipeline {
         // ─────────────────────────────────────────
         stage('Build Docker Image') {
             steps {
-                echo '🐳 Building Docker image...'
+                echo 'Building Docker image...'
                 bat "docker build -t %BUILD_IMAGE% ."
                 bat "docker tag %BUILD_IMAGE% %LATEST_IMAGE%"
-                echo '✅ Docker image built successfully!'
+                echo 'Docker image built successfully!'
             }
         }
 
@@ -76,40 +76,50 @@ pipeline {
         // ─────────────────────────────────────────
         stage('Push to Docker Hub') {
             steps {
-                echo '☁️ Pushing image to Docker Hub...'
+                echo 'Pushing image to Docker Hub...'
                 withCredentials([usernamePassword(
                     credentialsId: 'dockerhub-credentials',
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
-                    // Windows bat uses -p flag (password-stdin not supported on Windows)
                     bat "docker login -u %DOCKER_USER% -p %DOCKER_PASS%"
                     bat "docker push %BUILD_IMAGE%"
                     bat "docker push %LATEST_IMAGE%"
                     bat "docker logout"
                 }
-                echo '✅ Image pushed to Docker Hub!'
+                echo 'Image pushed to Docker Hub!'
             }
         }
 
         // ─────────────────────────────────────────
         // STAGE 6 : Deploy Container Locally
+        // KEY FIX: use 2>nul + exit /b 0 so pipeline
+        // never fails if container does not exist yet
         // ─────────────────────────────────────────
         stage('Deploy Container') {
             steps {
-                echo '🚀 Deploying container...'
+                echo 'Deploying container...'
 
-                // Stop and remove old container if it exists
-                bat "docker stop %CONTAINER_NAME% || echo Container was not running"
-                bat "docker rm %CONTAINER_NAME% || echo Container did not exist"
+                // Stop old container - ignore error if not running
+                bat """
+                    docker stop %CONTAINER_NAME% 2>nul
+                    exit /b 0
+                """
 
-                // Run new container
+                // Remove old container - ignore error if not existing
+                bat """
+                    docker rm %CONTAINER_NAME% 2>nul
+                    exit /b 0
+                """
+
+                // Run brand new container
                 bat "docker run -d -p %APP_PORT%:%APP_PORT% --name %CONTAINER_NAME% %LATEST_IMAGE%"
 
-                // Show running containers
+                // Show all running containers
                 bat "docker ps"
 
-                echo '✅ Container deployed on port 8080!'
+                echo 'Container deployed successfully on port 8084!'
+                echo 'Test at: http://localhost:8084/employees'
             }
         }
 
@@ -120,15 +130,14 @@ pipeline {
     // ─────────────────────────────────────────
     post {
         success {
-            echo '🎉 ✅ Pipeline SUCCESSFUL!'
-            echo '👉 App running at: http://localhost:8084/employees'
-            echo '👉 Docker Hub : https://hub.docker.com/r/manojchoudhary67/employee-api'
+            echo 'Pipeline SUCCESSFUL!'
+            echo 'App running at: http://localhost:8084/employees'
+            echo 'Docker Hub: https://hub.docker.com/r/manojchoudhary67/employee-api'
         }
         failure {
-            echo '❌ Pipeline FAILED — check the stage logs above'
+            echo 'Pipeline FAILED - check the stage logs above'
         }
         always {
-            // Clean workspace after every build
             cleanWs()
         }
     }
