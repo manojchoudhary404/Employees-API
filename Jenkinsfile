@@ -29,26 +29,24 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                bat 'docker build -t %DOCKER_IMAGE% .'
-            }
-        }
-
-        stage('Verify Docker Image') {
-            steps {
-                bat 'docker images'
+                bat """
+                docker build -t %DOCKER_IMAGE% .
+                docker tag %DOCKER_IMAGE% manojchoudhary67/employee-api:latest
+                """
             }
         }
 
         stage('Push Docker Image') {
             steps {
                 withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub-credentials',   // ✅ fixed
+                    credentialsId: 'dockerhub-credentials',
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
                     bat """
                     echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
                     docker push %DOCKER_IMAGE%
+                    docker push manojchoudhary67/employee-api:latest
                     docker logout
                     """
                 }
@@ -58,9 +56,8 @@ pipeline {
         stage('Deploy Container') {
             steps {
                 bat """
-                docker stop %CONTAINER_NAME% || echo Not running
-                docker rm %CONTAINER_NAME% || echo Not exists
-                docker run -d -p 8184:8184 --name %CONTAINER_NAME% %DOCKER_IMAGE%
+                docker rm -f %CONTAINER_NAME% || echo Not running
+                docker run -d -p 8084:8084 --name %CONTAINER_NAME% %DOCKER_IMAGE%
                 docker ps -a
                 """
             }
