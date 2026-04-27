@@ -100,20 +100,12 @@ pipeline {
     steps {
         echo 'Deploying container...'
 
-        // Stop container (ignore error if not running)
-        bat "docker stop %CONTAINER_NAME% 2>nul || ver >nul"
-
-        // Remove container (ignore error if not exists)
-        bat "docker rm %CONTAINER_NAME% 2>nul || ver >nul"
-
-        // Run new container
+        bat "docker rm -f %CONTAINER_NAME% 2>nul || ver >nul"
         bat "docker run -d -p %APP_PORT%:%APP_PORT% --name %CONTAINER_NAME% %LATEST_IMAGE%"
 
-        // Show running containers
         bat "docker ps"
 
-        echo 'Container deployed successfully on port 8084!'
-        echo 'Test at: http://localhost:8084/employees'
+        echo 'Container deployed successfully!'
     }
 }
 
