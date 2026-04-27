@@ -7,8 +7,11 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE = "manojchoudhary67/employee-api:${BUILD_NUMBER}"
+        IMAGE_NAME = "manojchoudhary67/employee-api"
+        BUILD_IMAGE = "${IMAGE_NAME}:${BUILD_NUMBER}"
+        LATEST_IMAGE = "${IMAGE_NAME}:latest"
         CONTAINER_NAME = "employee-container"
+        PORT = "8084"
     }
 
     stages {
@@ -30,13 +33,13 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 bat """
-                docker build -t %DOCKER_IMAGE% .
-                docker tag %DOCKER_IMAGE% manojchoudhary67/employee-api:latest
+                docker build -t %BUILD_IMAGE% .
+                docker tag %BUILD_IMAGE% %LATEST_IMAGE%
                 """
             }
         }
 
-        stage('Push Docker Image') {
+        stage('Docker Login & Push') {
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'dockerhub-credentials',
@@ -45,8 +48,15 @@ pipeline {
                 )]) {
                     bat """
                     echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
-                    docker push %DOCKER_IMAGE%
-                    docker push manojchoudhary67/employee-api:latest
+
+                    IF %ERRORLEVEL% NEQ 0 (
+                        echo Docker login failed
+                        exit /b 1
+                    )
+
+                    docker push %BUILD_IMAGE%
+                    docker push %LATEST_IMAGE%
+
                     docker logout
                     """
                 }
@@ -56,8 +66,13 @@ pipeline {
         stage('Deploy Container') {
             steps {
                 bat """
-                docker rm -f %CONTAINER_NAME% || echo Not running
-                docker run -d -p 8084:8084 --name %CONTAINER_NAME% %DOCKER_IMAGE%
+                docker rm -f %CONTAINER_NAME% || echo No existing container
+
+                docker run -d ^
+                -p %PORT%:%PORT% ^
+                --name %CONTAINER_NAME% ^
+                %BUILD_IMAGE%
+
                 docker ps -a
                 """
             }
@@ -66,10 +81,10 @@ pipeline {
 
     post {
         success {
-            echo '✅ Pipeline executed successfully!'
+            echo '✅ Build, Push, and Deployment SUCCESSFUL'
         }
         failure {
-            echo '❌ Pipeline failed. Check logs above.'
+            echo '❌ Pipeline FAILED - check logs above'
         }
         always {
             cleanWs()
